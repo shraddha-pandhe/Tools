@@ -1,4 +1,4 @@
-#!/home/y/bin/python2.6
+#!/usr/bin/python
 
 
 import exceptions

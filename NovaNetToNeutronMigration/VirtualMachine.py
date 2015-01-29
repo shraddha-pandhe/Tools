@@ -1,4 +1,4 @@
-#!/home/y/bin/python2.6
+#!/usrbin/python
 
 from fabric.api import local
 
