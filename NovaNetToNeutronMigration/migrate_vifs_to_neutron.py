@@ -22,7 +22,7 @@ from VirtualMachine import VirtualMachine
 LOG = logging.getLogger(__name__)
 LOG.setLevel(logging.DEBUG)
 LOG_FORMAT = '%(asctime)s %(levelname)s: [%(name)s] : %(message)s'
-fh = logging.FileHandler("/home/spandhe/reip.log",
+fh = logging.FileHandler("migration.log",
                          mode='a', encoding=None,
                          delay=False)
 
@@ -52,11 +52,11 @@ def main():
         hv_obj = Hypervisor(hv)
         Hypervisors.append(hv_obj)
 
-    # Maintain a list of all VMs in this rack
+    # Maintain a list of all VMs
     all_vms.extend(get_list_of_all_vms(Hypervisors))
 
     # Start configuring network
-    configure_networking_all(Hypervisors)
+    shutdown_all(Hypervisors)
 
     # nova start all in parallel
     start_all(all_vms_rack)
