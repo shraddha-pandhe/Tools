@@ -2,11 +2,8 @@
 
 
 import exceptions
-import getpass
-import json
 import logging
 import optparse
-import os
 import time
 
 import fabric
@@ -29,8 +26,6 @@ fh = logging.FileHandler("migration.log",
 fh.setFormatter(logging.Formatter(LOG_FORMAT))
 LOG.addHandler(fh)
 
-user = getpass.getuser()
-
 fabric.state.output['debug'] = True
 
 
@@ -41,11 +36,8 @@ def main():
 
     (options, _) = parser.parse_args()
     env.host_string = 'localhost'
-    hv_list = json.load(open(options.hv_list))
-
-    all_vms_cluster = []
+    hypervisor_list = open(options.hv_list)
     Hypervisors = []  # List of all hypervisors in the cluster
-
     all_vms = []
 
     for hv in hypervisor_list:
@@ -59,15 +51,12 @@ def main():
     shutdown_all(Hypervisors)
 
     # nova start all in parallel
-    start_all(all_vms_rack)
+    start_all(all_vms)
     LOG.debug("Sleeping for 20 seconds")
     time.sleep(20)
 
     # nova reboot all in parallel
-    reboot_all(all_vms_rack)
-
-    # Save all VMs in the cluster
-    all_vms_cluster.extend(all_vms_rack)
+    reboot_all(all_vms)
 
 
 def start_all(VMs):
